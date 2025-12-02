@@ -1,0 +1,1 @@
+The purpose of this application is to support and automate the booking process in various studios on the part of customers. 
