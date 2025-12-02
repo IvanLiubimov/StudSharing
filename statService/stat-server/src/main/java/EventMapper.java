@@ -27,6 +27,7 @@ public class EventMapper {
         return entity;
     }
 
+
     public EventStatDto toDto(EventStat entity) {
         EventStatDto dto = new EventStatDto();
         dto.setType(entity.getEventType());
