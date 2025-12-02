@@ -23,6 +23,7 @@ public class EventMapper {
             throw new RuntimeException("Failed to serialize payload to JSON", e);
         }
 
+
         return entity;
     }
 
