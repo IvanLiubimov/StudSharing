@@ -8,13 +8,19 @@ import java.util.List;
 public interface StatService {
     BookingDtoStat getBookingsStat(LocalDateTime startDateTime, LocalDateTime endDateTime, List<String> types);
 
-    RoomStatisticDto getRoomStatisticById(Long roomId);
+    RoomStatisticDto getRoomStatisticById(LocalDateTime startDateTime,
+                                          LocalDateTime endDateTime,
+                                          Long roomId);
 
-    EngineerStatisticDto getEngineerStatisticById(Long engineerId);
+    EngineerStatisticDto getEngineerStatisticById(LocalDateTime startDateTime,
+                                                  LocalDateTime endDateTime,
+                                                  Long engineerId);
 
-    PeakHoursDto getMostPopularHours();
+    PeakHoursDto getMostPopularHours(LocalDateTime startDateTime,
+                                     LocalDateTime endDateTime);
 
-    StatSummaryDto getStatSummary();
+    StatSummaryDto getStatSummary(LocalDateTime startDateTime,
+                                  LocalDateTime endDateTime);
 
     EventStat saveEventStat(EventStatDto eventStatDto);
 }

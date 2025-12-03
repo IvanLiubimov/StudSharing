@@ -8,7 +8,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -47,27 +46,65 @@ public class StatController {
     }
 
     @GetMapping(path = "/stats/rooms/{roomId}")
-    public ResponseEntity<RoomStatisticDto> getRoomStatisticById(@PathVariable Long roomId) {
+    public ResponseEntity<RoomStatisticDto> getRoomStatisticById(@PathVariable Long roomId,
+                                                                 @RequestParam String start,
+                                                                 @RequestParam String end) {
         log.info("получен запрос на получение данных статистики комнаты с id = {}", roomId);
-        return ResponseEntity.ok(statService.getRoomStatisticById(roomId));
+        String decodedStart = URLDecoder.decode(start, StandardCharsets.UTF_8);
+        String decodedEnd = URLDecoder.decode(end, StandardCharsets.UTF_8);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startDateTime = LocalDateTime.parse(decodedStart, formatter);
+        LocalDateTime endDateTime = LocalDateTime.parse(decodedEnd, formatter);
+
+        return ResponseEntity.ok(statService.getRoomStatisticById(startDateTime, endDateTime, roomId));
     }
 
     @GetMapping(path = "/stats/engineers/{engineerId}")
-    public ResponseEntity<EngineerStatisticDto> getEngineerStatisticById(@PathVariable Long engineerId) {
+    public ResponseEntity<EngineerStatisticDto> getEngineerStatisticById(@PathVariable Long engineerId,
+                                                                         @RequestParam String start,
+                                                                         @RequestParam String end) {
         log.info("получен запрос на получение данных статистики инженера с id = {}", engineerId);
-        return ResponseEntity.ok(statService.getEngineerStatisticById(engineerId));
+
+        String decodedStart = URLDecoder.decode(start, StandardCharsets.UTF_8);
+        String decodedEnd = URLDecoder.decode(end, StandardCharsets.UTF_8);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startDateTime = LocalDateTime.parse(decodedStart, formatter);
+        LocalDateTime endDateTime = LocalDateTime.parse(decodedEnd, formatter);
+
+        return ResponseEntity.ok(statService.getEngineerStatisticById(startDateTime, endDateTime, engineerId));
     }
 
     @GetMapping(path = "/stats/peak-hours")
-    public ResponseEntity<PeakHoursDto> getMostPopularHours() {
+    public ResponseEntity<PeakHoursDto> getMostPopularHours(@RequestParam String start,
+                                                            @RequestParam String end) {
         log.info("получен запрос на получение самых популярных часов посещения");
-        return ResponseEntity.ok(statService.getMostPopularHours());
+
+        String decodedStart = URLDecoder.decode(start, StandardCharsets.UTF_8);
+        String decodedEnd = URLDecoder.decode(end, StandardCharsets.UTF_8);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startDateTime = LocalDateTime.parse(decodedStart, formatter);
+        LocalDateTime endDateTime = LocalDateTime.parse(decodedEnd, formatter);
+
+        return ResponseEntity.ok(statService.getMostPopularHours(startDateTime,
+                endDateTime));
     }
 
     @GetMapping(path = "/stats/summary")
-    public ResponseEntity<StatSummaryDto> getStatSummary() {
+    public ResponseEntity<StatSummaryDto> getStatSummary(@RequestParam String start,
+                                                         @RequestParam String end) {
         log.info("получен запрос на получение общих данных статистики ");
-        return ResponseEntity.ok(statService.getStatSummary());
+
+        String decodedStart = URLDecoder.decode(start, StandardCharsets.UTF_8);
+        String decodedEnd = URLDecoder.decode(end, StandardCharsets.UTF_8);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startDateTime = LocalDateTime.parse(decodedStart, formatter);
+        LocalDateTime endDateTime = LocalDateTime.parse(decodedEnd, formatter);
+
+        return ResponseEntity.ok(statService.getStatSummary(startDateTime, endDateTime));
     }
 
 }
