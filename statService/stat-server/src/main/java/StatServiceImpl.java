@@ -7,10 +7,8 @@ import model.EventStat;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -138,20 +136,70 @@ public class StatServiceImpl implements StatService {
     public PeakHoursDto getMostPopularHours(LocalDateTime startDateTime,
                                             LocalDateTime endDateTime) {
 
+        Instant start = toInstant(startDateTime);
+        Instant end = toInstant(endDateTime);
 
-        return null;
-    }
+        Collection<EventStat> eventStats = statRepository.getStats(start, end).stream()
+                .filter(e -> e.getEventType().equals("BOOKING_CREATED")).toList();
 
-    @Override
-    public StatSummaryDto getStatSummary(LocalDateTime startDateTime,
-                                         LocalDateTime endDateTime) {
-        return null;
+        Collection<BookingStat> bookingStats = eventStats.stream()
+                .map(eventStat -> {
+                    try {
+                        return objectMapper.readValue(eventStat.getPayloadJson(), BookingStat.class);
+                    } catch (JsonProcessingException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .toList();
+
+        //таблица часов и их частоты встречаемости
+        Map<Integer, Long> freqHours = new HashMap<>();
+
+        //заполнение этой таблицы
+        for (BookingStat bookingStat : bookingStats) {
+            List<Integer> hours = expandHours(bookingStat.getStartTime().getHour(),
+            bookingStat.getEndTime().getHour());
+            for (int h : hours) {
+                freqHours.merge(h, 1L, Long::sum);
+            }
+        }
+
+        //поиск максимальной частоты встречаемости часа
+        Long maxFreq = freqHours.values()
+                .stream()
+                .mapToLong(v -> v)
+                .max()
+                .orElse(0);
+
+        PeakHoursDto peakHoursDto = new PeakHoursDto();
+
+        //создаём дто с нужными часами
+        peakHoursDto.setPeakHours(freqHours.entrySet().stream()
+                .filter(h -> h.getValue().equals(maxFreq))
+                .map(e -> e.getKey())
+                .collect(Collectors.toSet()));
+
+        return peakHoursDto;
     }
 
     private Instant toInstant (LocalDateTime localDateTime) {
         return localDateTime != null
                 ? localDateTime.atZone(ZoneId.systemDefault()).toInstant()
                 : null;
+    }
+
+    private List<Integer> expandHours(int startHour, int endHour) {
+        List<Integer> hours = new ArrayList<>();
+
+        int h = startHour;
+
+        // идём час за часом, двигаясь по кругу 24 часа
+        while (h != endHour) {
+            hours.add(h);
+            h = (h + 1) % 24; // после 23 → 0
+        }
+
+        return hours; // endHour НЕ включаем — так работает диапазон в статистике
     }
 }
 

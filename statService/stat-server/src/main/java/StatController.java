@@ -91,20 +91,4 @@ public class StatController {
         return ResponseEntity.ok(statService.getMostPopularHours(startDateTime,
                 endDateTime));
     }
-
-    @GetMapping(path = "/stats/summary")
-    public ResponseEntity<StatSummaryDto> getStatSummary(@RequestParam String start,
-                                                         @RequestParam String end) {
-        log.info("получен запрос на получение общих данных статистики ");
-
-        String decodedStart = URLDecoder.decode(start, StandardCharsets.UTF_8);
-        String decodedEnd = URLDecoder.decode(end, StandardCharsets.UTF_8);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime startDateTime = LocalDateTime.parse(decodedStart, formatter);
-        LocalDateTime endDateTime = LocalDateTime.parse(decodedEnd, formatter);
-
-        return ResponseEntity.ok(statService.getStatSummary(startDateTime, endDateTime));
-    }
-
 }

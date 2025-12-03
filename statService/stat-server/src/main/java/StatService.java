@@ -1,10 +1,12 @@
 import model.EventStat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+@Service
 public interface StatService {
     BookingDtoStat getBookingsStat(LocalDateTime startDateTime, LocalDateTime endDateTime, List<String> types);
 
@@ -18,9 +20,6 @@ public interface StatService {
 
     PeakHoursDto getMostPopularHours(LocalDateTime startDateTime,
                                      LocalDateTime endDateTime);
-
-    StatSummaryDto getStatSummary(LocalDateTime startDateTime,
-                                  LocalDateTime endDateTime);
 
     EventStat saveEventStat(EventStatDto eventStatDto);
 }

@@ -13,5 +13,4 @@ public class StatSummaryDto {
     private List<Integer> peakHours;
     private Long mostPopularRoom;
     private Long mostActiveEngineer;
-
 }
