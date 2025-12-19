@@ -1,4 +1,4 @@
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY target/stat-server.jar app.jar
+COPY target/stat-server-1.0-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]

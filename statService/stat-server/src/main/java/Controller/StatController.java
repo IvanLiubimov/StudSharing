@@ -1,3 +1,6 @@
+package Controller;
+
+import Service.StatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import model.EventStat;
@@ -25,7 +28,7 @@ public class StatController {
 
     @GetMapping(path = "/stats/bookings")
     public ResponseEntity<BookingDtoStat> getBookingsStat(@RequestParam String start,
-                                                                      @RequestParam String end) {
+                                                          @RequestParam String end) {
         log.info("получен запрос на получение данных статистики бронирований");
 
         List<String> types = List.of("BOOKING_CREATED", "BOOKING_CANCELLED");

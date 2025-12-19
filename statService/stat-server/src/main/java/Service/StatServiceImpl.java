@@ -1,8 +1,12 @@
+package Service;
+
+import Repository.StatRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import model.BookingStat;
+import model.EventMapper;
 import model.EventStat;
 import org.springframework.stereotype.Service;
 
