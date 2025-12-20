@@ -1,12 +1,10 @@
-package model;
+package ru.liubimov.statserver.model.payload;
 
-import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
 public class BookingStat {

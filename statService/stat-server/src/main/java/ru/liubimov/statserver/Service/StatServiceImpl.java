@@ -1,13 +1,14 @@
-package Service;
+package ru.liubimov.statserver.Service;
 
-import Repository.StatRepository;
+import ru.liubimov.statserver.Repository.StatRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import exceptions.NotFoundException;
+import dto.*;
+import ru.liubimov.statserver.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import model.BookingStat;
-import model.EventMapper;
-import model.EventStat;
+import ru.liubimov.statserver.model.payload.BookingStat;
+import ru.liubimov.statserver.model.EventMapper;
+import ru.liubimov.statserver.model.EventStat;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
@@ -38,7 +39,7 @@ public class StatServiceImpl implements StatService {
         Instant start = toInstant(startDateTime);
         Instant end = toInstant(endDateTime);
 
-        Collection<EventStat> eventStats = statRepository.findAllByTypes(start, end, types);
+        Collection<EventStat> eventStats = statRepository.findAllByEventTypes(start, end, types);
 
         Collection<BookingStat> listOfBookings = eventStats
                 .stream()

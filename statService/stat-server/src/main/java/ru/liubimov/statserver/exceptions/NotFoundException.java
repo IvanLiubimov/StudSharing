@@ -1,4 +1,4 @@
-package exceptions;
+package ru.liubimov.statserver.exceptions;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

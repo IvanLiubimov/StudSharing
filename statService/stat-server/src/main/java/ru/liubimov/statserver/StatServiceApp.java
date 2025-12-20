@@ -1,3 +1,5 @@
+package ru.liubimov.statserver;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -6,5 +8,4 @@ public class StatServiceApp {
     public static void main(String[] args) {
         SpringApplication.run(StatServiceApp.class, args);
     }
-
 }

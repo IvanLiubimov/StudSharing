@@ -1,6 +1,7 @@
-package Service;
+package ru.liubimov.statserver.Service;
 
-import model.EventStat;
+import dto.*;
+import ru.liubimov.statserver.model.EventStat;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

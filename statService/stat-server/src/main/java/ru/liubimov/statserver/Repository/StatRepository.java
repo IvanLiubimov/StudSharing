@@ -1,6 +1,6 @@
-package Repository;
+package ru.liubimov.statserver.Repository;
 
-import model.EventStat;
+import ru.liubimov.statserver.model.EventStat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,14 +12,15 @@ import java.util.List;
 @Repository
 public interface StatRepository extends JpaRepository<EventStat, Long> {
 
-    @Query("SELECT e FROM EVENTS c e.datetime BETWEEN :start AND :end")
+    @Query("SELECT e FROM EventStat e WHERE e.dateTime BETWEEN :start AND :end")
     public Collection<EventStat> getStats(Instant start, Instant end);
 
-    @Query("SELECT e FROM EventStat WHERE e.datetime BETWEEN :start AND :end AND e.type IN :types")
-    public Collection<EventStat> findAllByTypes(Instant start, Instant end, List<String> types);
+
+    @Query("SELECT e FROM EventStat e WHERE e.dateTime BETWEEN :start AND :end AND e.eventType IN :types")
+    public Collection<EventStat> findAllByEventTypes(Instant start, Instant end, List<String> types);
 
     @Query(value = "SELECT * FROM events " +
-            "WHERE datetime BETWEEN :start AND :end " +
+            "WHERE dateTime BETWEEN :start AND :end " +
             "AND payload ->>'roomId' = :roomId",
             nativeQuery = true)
     public Collection<EventStat> findAllByRoomId(Instant start, Instant end, String roomId);

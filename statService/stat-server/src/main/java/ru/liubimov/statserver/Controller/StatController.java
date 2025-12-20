@@ -1,9 +1,11 @@
-package Controller;
+package ru.liubimov.statserver.Controller;
 
-import Service.StatService;
+import ru.liubimov.statserver.Service.StatService;
+
+import dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import model.EventStat;
+import ru.liubimov.statserver.model.EventStat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StatController {
 
-    final StatService statService;
+    private final StatService statService;
 
     @PostMapping("/events")
     public ResponseEntity<EventStat> saveEvent(@RequestBody EventStatDto eventStatDto){
