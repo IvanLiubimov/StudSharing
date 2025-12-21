@@ -1,7 +1,9 @@
+package ru.liubimov.statserver.model;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dto.EventStatDto;
 import lombok.RequiredArgsConstructor;
-import model.EventStat;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

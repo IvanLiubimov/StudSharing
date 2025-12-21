@@ -1,7 +1,9 @@
+package ru.liubimov.statserver.Service;
+
+import dto.EventStatDto;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-
 
 @Component
 public class Validator {

@@ -1,3 +1,4 @@
+package dto;
 import lombok.Getter;
 import lombok.Setter;
 
