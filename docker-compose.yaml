@@ -1,0 +1,30 @@
+services:
+  stat_server:
+    build:
+      context: ./statService/stat-server
+      dockerfile: Dockerfile
+    container_name: statsserver
+    ports:
+      - "9090:9090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://stat_postgres_db:5432/stats_data_base
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - stat_postgres_db
+
+
+  stat_postgres_db:
+    image: postgres:15-alpine
+    container_name: stat_postgres_db
+    environment:
+      POSTGRES_DB: stats_data_base
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - stat_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  stat_postgres_data:

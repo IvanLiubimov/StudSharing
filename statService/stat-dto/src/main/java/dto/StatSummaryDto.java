@@ -1,3 +1,5 @@
+package dto;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +15,4 @@ public class StatSummaryDto {
     private List<Integer> peakHours;
     private Long mostPopularRoom;
     private Long mostActiveEngineer;
-
 }
