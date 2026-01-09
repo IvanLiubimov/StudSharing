@@ -17,7 +17,7 @@ public class Validator {
         if (eventStatDto.getDateTime() == null || eventStatDto.getDateTime().isBefore(MIN_DATE)) {
             throw new IllegalArgumentException("Некорректно введены дата и время");
         }
-        if (eventStatDto.getPayload() == null || eventStatDto.getPayload().isEmpty()) {
+        if (eventStatDto.getPayload() == null) {
             throw new IllegalArgumentException("Payload не может быть null или пустым");
         }
     }
