@@ -63,7 +63,7 @@ public class StatController {
         LocalDateTime startDateTime = LocalDateTime.parse(decodedStart, formatter);
         LocalDateTime endDateTime = LocalDateTime.parse(decodedEnd, formatter);
 
-        return ResponseEntity.ok(statService.getRoomStatisticById(startDateTime, endDateTime, roomId));
+        return ResponseEntity.status(HttpStatus.OK).body(statService.getRoomStatisticById(startDateTime, endDateTime, roomId));
     }
 
     @GetMapping(path = "/stats/engineers/{engineerId}")
@@ -79,7 +79,7 @@ public class StatController {
         LocalDateTime startDateTime = LocalDateTime.parse(decodedStart, formatter);
         LocalDateTime endDateTime = LocalDateTime.parse(decodedEnd, formatter);
 
-        return ResponseEntity.ok(statService.getEngineerStatisticById(startDateTime, endDateTime, engineerId));
+        return ResponseEntity.status(HttpStatus.OK).body(statService.getEngineerStatisticById(startDateTime, endDateTime, engineerId));
     }
 
     @GetMapping(path = "/stats/peak-hours")
@@ -94,7 +94,7 @@ public class StatController {
         LocalDateTime startDateTime = LocalDateTime.parse(decodedStart, formatter);
         LocalDateTime endDateTime = LocalDateTime.parse(decodedEnd, formatter);
 
-        return ResponseEntity.ok(statService.getMostPopularHours(startDateTime,
+        return ResponseEntity.status(HttpStatus.OK).body(statService.getMostPopularHours(startDateTime,
                 endDateTime));
     }
 }
