@@ -1,5 +1,6 @@
 package dto;
 
+import dto.payload.BookingStat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 @Setter
 @Getter
 public class EventStatDto {
-    private String type;
-    private LocalDateTime timestamp;
-    private Map<String, Object> payload;
+    private LocalDateTime dateTime;
+    private String EventType;
+    private BookingStat payload;
 }

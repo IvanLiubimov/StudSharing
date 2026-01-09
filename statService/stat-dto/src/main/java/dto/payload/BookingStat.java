@@ -1,4 +1,4 @@
-package ru.liubimov.statserver.model.payload;
+package dto.payload;
 
 import lombok.Getter;
 import lombok.Setter;

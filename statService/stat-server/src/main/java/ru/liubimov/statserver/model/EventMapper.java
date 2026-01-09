@@ -16,33 +16,17 @@ public class EventMapper {
 
     public EventStat toEntity(EventStatDto dto) {
         EventStat entity = new EventStat();
-        entity.setEventType(dto.getType());
-        entity.setDateTime(dto.getTimestamp());
-        try {
-            String json = objectMapper.writeValueAsString(dto.getPayload());
-            entity.setPayloadJson(json);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to serialize payload to JSON", e);
-        }
-
-
+        entity.setEventType(dto.getEventType());
+        entity.setDateTime(dto.getDateTime());
+        entity.setPayloadJson(dto.getPayload());
         return entity;
     }
 
     public EventStatDto toDto(EventStat entity) {
         EventStatDto dto = new EventStatDto();
-        dto.setType(entity.getEventType());
-        dto.setTimestamp(entity.getDateTime());
-        try {
-            var payloadMap = objectMapper.readValue(
-                    entity.getPayloadJson(),
-                    Map.class
-            );
-            dto.setPayload(payloadMap);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to deserialize payload JSON", e);
-        }
-
+        dto.setEventType(entity.getEventType());
+        dto.setDateTime(entity.getDateTime());
+        dto.setPayload(entity.getPayloadJson());
         return dto;
     }
 }

@@ -1,12 +1,10 @@
 package ru.liubimov.statserver.Service;
 
 import ru.liubimov.statserver.Repository.StatRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.*;
 import ru.liubimov.statserver.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import ru.liubimov.statserver.model.payload.BookingStat;
+import dto.payload.BookingStat;
 import ru.liubimov.statserver.model.EventMapper;
 import ru.liubimov.statserver.model.EventStat;
 import org.springframework.stereotype.Service;
@@ -22,7 +20,6 @@ public class StatServiceImpl implements StatService {
     final Validator validator;
     final EventMapper eventMapper;
     final StatRepository statRepository;
-    private final ObjectMapper objectMapper;
 
     @Override
     public EventStat saveEventStat(EventStatDto eventStatDto) {
@@ -41,24 +38,15 @@ public class StatServiceImpl implements StatService {
 
         Collection<EventStat> eventStats = statRepository.findAllByEventTypes(start, end, types);
 
-        Collection<BookingStat> listOfBookings = eventStats
-                .stream()
-                .map(eventStat -> {
-                    try {
-                        return objectMapper.readValue(eventStat.getPayloadJson(), BookingStat.class);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .toList();
+        Collection<BookingStat> bookingStats = getBookingStats(eventStats);
 
         BookingDtoStat bookingDtoStat = new BookingDtoStat();
         Map<String, Integer> byDay = new HashMap<>();
-                for (BookingStat booking : listOfBookings) {
+                for (BookingStat booking : bookingStats) {
             String date = booking.getStartTime().toLocalDate().toString();
             byDay.put(date, byDay.getOrDefault(date, 0) + 1);
         }
-        bookingDtoStat.setTotal((long) listOfBookings.size());
+        bookingDtoStat.setTotal((long) bookingStats.size());
         bookingDtoStat.setByDay(byDay);
 
         return bookingDtoStat;
@@ -74,15 +62,7 @@ public class StatServiceImpl implements StatService {
 
         Collection<EventStat> eventStats = statRepository.findAllByRoomId(start, end, String.valueOf(roomId));
 
-        Collection<BookingStat> bookingStats = eventStats.stream()
-                .map(eventStat -> {
-                    try {
-                        return objectMapper.readValue(eventStat.getPayloadJson(), BookingStat.class);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .toList();
+        Collection<BookingStat> bookingStats = getBookingStats(eventStats);
 
         if (bookingStats.isEmpty()) {
             throw new NotFoundException("No statistics found for room " + roomId);
@@ -111,15 +91,7 @@ public class StatServiceImpl implements StatService {
 
         Collection<EventStat> eventStats = statRepository.findAllByEngineerId(start, end, String.valueOf(engineerId));
 
-        Collection<BookingStat> bookingStats = eventStats.stream()
-                .map(eventStat -> {
-                    try {
-                        return objectMapper.readValue(eventStat.getPayloadJson(), BookingStat.class);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .toList();
+        Collection<BookingStat> bookingStats = getBookingStats(eventStats);
 
         if (bookingStats.isEmpty()) {
             throw new NotFoundException("No statistics found for engineer " + engineerId);
@@ -147,15 +119,7 @@ public class StatServiceImpl implements StatService {
         Collection<EventStat> eventStats = statRepository.getStats(start, end).stream()
                 .filter(e -> e.getEventType().equals("BOOKING_CREATED")).toList();
 
-        Collection<BookingStat> bookingStats = eventStats.stream()
-                .map(eventStat -> {
-                    try {
-                        return objectMapper.readValue(eventStat.getPayloadJson(), BookingStat.class);
-                    } catch (JsonProcessingException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .toList();
+        Collection<BookingStat> bookingStats = getBookingStats(eventStats);
 
         //таблица часов и их частоты встречаемости
         Map<Integer, Long> freqHours = new HashMap<>();
@@ -206,6 +170,14 @@ public class StatServiceImpl implements StatService {
 
         return hours; // endHour НЕ включаем — так работает диапазон в статистике
     }
+
+    private Collection<BookingStat> getBookingStats(Collection<EventStat> eventStats) {
+        return eventStats.stream()
+                .map(EventStat::getPayloadJson)
+                .toList();
+    }
+
+
 }
 
 
