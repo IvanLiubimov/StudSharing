@@ -1,5 +1,6 @@
 package ru.liubimov.statserver.Controller;
 
+import org.springframework.http.HttpStatus;
 import ru.liubimov.statserver.Service.StatService;
 
 import dto.*;
@@ -25,7 +26,7 @@ public class StatController {
     @PostMapping("/events")
     public ResponseEntity<EventStat> saveEvent(@RequestBody EventStatDto eventStatDto){
         log.info("получен запрос на сохранение данных события");
-        return ResponseEntity.ok(statService.saveEventStat(eventStatDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(statService.saveEventStat(eventStatDto));
     }
 
     @GetMapping(path = "/stats/bookings")

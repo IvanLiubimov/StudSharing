@@ -1,12 +1,13 @@
 package ru.liubimov.statserver.model;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.EventStatDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Component
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class EventMapper {
     public EventStat toEntity(EventStatDto dto) {
         EventStat entity = new EventStat();
         entity.setEventType(dto.getEventType());
-        entity.setDateTime(dto.getDateTime());
+        entity.setDateTime(toInstant(dto.getDateTime()));
         entity.setPayloadJson(dto.getPayload());
         return entity;
     }
@@ -25,8 +26,22 @@ public class EventMapper {
     public EventStatDto toDto(EventStat entity) {
         EventStatDto dto = new EventStatDto();
         dto.setEventType(entity.getEventType());
-        dto.setDateTime(entity.getDateTime());
+        dto.setDateTime(toLocalDateTime(entity.getDateTime()));
         dto.setPayload(entity.getPayloadJson());
         return dto;
+    }
+
+    private Instant toInstant(LocalDateTime dateTime) {
+        if(dateTime != null){
+            return dateTime.atZone(ZoneId.systemDefault()).toInstant();
+        } else {
+            return null;
+        }
+    }
+
+    private LocalDateTime toLocalDateTime(Instant instant) {
+        return instant != null
+                ? LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+                : null;
     }
 }
