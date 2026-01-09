@@ -48,7 +48,7 @@ public class StatController {
                 endDateTime,
                 types != null ? types : List.of());
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping(path = "/stats/rooms/{roomId}")
