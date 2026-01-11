@@ -19,6 +19,5 @@ public class StatClient {
     public void saveEvent(EventStatDto eventStatDto) {
         log.info("Отправка EVENT в статистику: {}", eventStatDto);
         restTemplate.postForEntity(statServerUrl + "/events", eventStatDto, Void.class);
-
     }
 }
