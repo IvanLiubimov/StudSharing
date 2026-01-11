@@ -36,18 +36,18 @@ public class RoomController {
     }
 
     @PutMapping("/api/admin/rooms/{id}")
-    public ResponseEntity<RoomDto> createRoom(@PathVariable Long id) {
+    public ResponseEntity<RoomDto> updateRoom(@PathVariable Long id, @RequestBody RoomDto roomDto) {
         log.info("Получен запрос от администратора на обновление комнаты");
-        RoomDto updatedRoomDto = roomService.editRoom(id);
+        RoomDto updatedRoomDto = roomService.editRoom(id, roomDto);
         log.info("Комната id={} обновлена", id);
         return ResponseEntity.status(HttpStatus.OK).body(updatedRoomDto);
     }
 
-    @DeleteMapping("/api/admin/room/{id}")
+    @DeleteMapping("/api/admin/rooms/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
         log.info("Запрос от администратора на удаление комнаты по id={}", id);
         roomService.deleteRoom(id);
-        log.info("Категория id={} deleted", id);
+        log.info("Комната id={} удалена", id);
         return ResponseEntity.noContent().build();
     }
 
