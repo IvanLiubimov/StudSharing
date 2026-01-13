@@ -1,12 +1,10 @@
 package ru.practicum.room.model;
 
-import org.springframework.stereotype.Component;
 import ru.practicum.room.RoomDto;
 
-@Component
 public class RoomMapper {
 
-    public Room toEntity(RoomDto dto) {
+    public static Room toEntity(RoomDto dto) {
         if (dto == null) {
             return null;
         }
@@ -19,7 +17,7 @@ public class RoomMapper {
         return room;
     }
 
-    public RoomDto toDto(Room room) {
+    public static RoomDto toDto(Room room) {
         if (room == null) {
             return null;
         }
@@ -32,7 +30,7 @@ public class RoomMapper {
         return dto;
     }
 
-    public void updateEntity(Room room, RoomDto dto) {
+    public static Room updateEntity(Room room, RoomDto dto) {
         if (dto.getName() != null) {
             room.setName(dto.getName());
         }
@@ -42,6 +40,7 @@ public class RoomMapper {
         if (dto.getCapacity() != null) {
             room.setCapacity(dto.getCapacity());
         }
+        return room;
     }
 }
 

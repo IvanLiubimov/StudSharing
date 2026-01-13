@@ -15,42 +15,35 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
 
-    private final RoomMapper roomMapper;
     private final RoomRepository roomRepository;
     private final RoomValidator roomValidator;
     private final BookingRepository bookingRepository;
 
     @Override
     public Collection<RoomDto> getAllRooms() {
-        Collection<RoomDto> listOfRooms = roomRepository.findAll().stream().map(roomMapper::toDto).toList();
-        return listOfRooms;
+        return roomRepository.findAll().stream().map(RoomMapper::toDto).toList();
     }
 
     @Override
     public RoomDto getRoomById(Long id) {
         Room room = getRoomIfExists(id);
-        return roomMapper.toDto(room);
+        return RoomMapper.toDto(room);
     }
 
     @Override
     public RoomDto createRoom(RoomDto roomDto) {
         roomValidator.validateForCreate(roomDto);
-        Room room = roomRepository.save(roomMapper.toEntity(roomDto));
-        return roomMapper.toDto(room);
+        Room room = roomRepository.save(RoomMapper.toEntity(roomDto));
+        return RoomMapper.toDto(room);
     }
 
     @Override
     public RoomDto editRoom(Long id, RoomDto roomDto) {
         Room oldRoom = getRoomIfExists(id);
         roomValidator.validateForUpdate(id, roomDto);
+        Room updatedRoom = RoomMapper.updateEntity(oldRoom, roomDto);
 
-        oldRoom.setCapacity(roomDto.getCapacity());
-        oldRoom.setName(roomDto.getName());
-        oldRoom.setDescription(roomDto.getDescription());
-
-        Room updatedRoom = roomRepository.save(oldRoom);
-
-        return roomMapper.toDto(updatedRoom);
+        return RoomMapper.toDto(updatedRoom);
     }
 
     @Override

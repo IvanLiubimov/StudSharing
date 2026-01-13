@@ -1,6 +1,5 @@
 package ru.practicum.room.model;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.exception.ValidationException;

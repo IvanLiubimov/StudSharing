@@ -8,4 +8,6 @@ import ru.practicum.bookings.model.Booking;
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     boolean existsByRoomId(Long id);
+
+    boolean existsByEngineerId(Long id);
 }
